@@ -1,6 +1,7 @@
 name: Build PETKIT Media App
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - ".github/workflows/build-petkit-media-app.yml"
