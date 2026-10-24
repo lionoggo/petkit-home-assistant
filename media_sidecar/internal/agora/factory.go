@@ -22,6 +22,7 @@ const (
 	connectionTimeout  = 15 * time.Second
 	customPayloadType  = 69
 	encryptionModeGCM2 = 8
+	lanAccelerateParam = `{"rtc.lan_accelerate_enable": true}`
 )
 
 // Factory owns the process-wide Agora Server SDK lifecycle.
@@ -190,10 +191,8 @@ func (s *session) start(access server.CameraAccess, salt []byte) error {
 	if s.conn == nil {
 		return errors.New("create RTC connection")
 	}
-	if result := s.conn.GetAgoraParameter().SetParameters(
-		fmt.Sprintf(`{"che.audio.custom_payload_type":%d}`, customPayloadType),
-	); result != 0 {
-		return fmt.Errorf("set connection payload type: %d", result)
+	if err := configureRTCConnectionParameters(s.conn.GetAgoraParameter()); err != nil {
+		return err
 	}
 	if result := s.conn.EnableEncryption(1, &agoraservice.EncryptionConfig{
 		EncryptionMode:    encryptionModeGCM2,
@@ -296,6 +295,23 @@ func (s *session) start(access server.CameraAccess, salt []byte) error {
 	}
 	s.subscribed.Store(true)
 	_ = s.conn.SendIntraRequest(uid)
+	return nil
+}
+
+type parameterSetter interface {
+	SetParameters(string) int
+}
+
+func configureRTCConnectionParameters(setter parameterSetter) error {
+	parameters := []string{
+		fmt.Sprintf(`{"che.audio.custom_payload_type":%d}`, customPayloadType),
+		lanAccelerateParam,
+	}
+	for _, parameter := range parameters {
+		if result := setter.SetParameters(parameter); result != 0 {
+			return fmt.Errorf("set connection RTC parameter: %d", result)
+		}
+	}
 	return nil
 }
 
