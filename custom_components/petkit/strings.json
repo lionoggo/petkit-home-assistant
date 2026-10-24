@@ -1,0 +1,144 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect PETKIT",
+        "description": "Use a dedicated account with the D4sh feeder shared to it.",
+        "data": {
+          "account": "Account",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate PETKIT",
+        "description": "Enter the current password for {account}.",
+        "data": {
+          "password": "Password"
+        }
+      },
+      "init": {
+        "title": "PETKIT media sidecar",
+        "description": "Configure the native sidecar used for camera audio and video.",
+        "data": {
+          "media_sidecar_url": "Sidecar URL",
+          "media_sidecar_token": "Sidecar token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to PETKIT.",
+      "invalid_auth": "The account or password is invalid.",
+      "no_devices": "No PETKIT D4sh feeders were found.",
+      "verification_required": "PETKIT requires SMS or interactive verification. Complete sign-in in the official app and ensure a password is set.",
+      "sidecar_incomplete": "Enter both the sidecar URL and token, or leave both blank.",
+      "sidecar_unavailable": "The media sidecar health check failed."
+    },
+    "abort": {
+      "already_configured": "This PETKIT account is already configured.",
+      "reauth_successful": "Reauthentication succeeded."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "food_bin_1": {
+        "name": "Food bin 1"
+      },
+      "food_bin_2": {
+        "name": "Food bin 2"
+      },
+      "desiccant_days": {
+        "name": "Desiccant remaining"
+      },
+      "today_feed": {
+        "name": "Today feed"
+      },
+      "today_eat": {
+        "name": "Today eat"
+      },
+      "next_feed": {
+        "name": "Next feed"
+      },
+      "feed_plan": {
+        "name": "Feed plan",
+        "state": {
+          "enabled": "Enabled",
+          "paused": "Paused",
+          "unknown": "Unknown"
+        }
+      },
+      "eating_pet": {
+        "name": "Eating pet"
+      },
+      "last_eating_pet": {
+        "name": "Last eating pet"
+      }
+    },
+    "binary_sensor": {
+      "online": {
+        "name": "Online"
+      },
+      "feeding": {
+        "name": "Feeding"
+      },
+      "eating": {
+        "name": "Eating"
+      },
+      "plan_enabled": {
+        "name": "Plan enabled today"
+      },
+      "low_battery": {
+        "name": "Low battery"
+      },
+      "problem": {
+        "name": "Problem"
+      }
+    },
+    "button": {
+      "feed_bin_1": {
+        "name": "Feed bin 1 one portion"
+      },
+      "feed_bin_2": {
+        "name": "Feed bin 2 one portion"
+      },
+      "refresh": {
+        "name": "Refresh"
+      }
+    },
+    "switch": {
+      "manual_lock": {
+        "name": "Manual lock"
+      }
+    },
+    "event": {
+      "pet_activity": {
+        "name": "Pet activity"
+      }
+    }
+  },
+  "services": {
+    "feed_now": {
+      "name": "Feed now",
+      "description": "Dispense food immediately from one or both bins."
+    },
+    "save_schedule": {
+      "name": "Save feeding schedule",
+      "description": "Replace all seven daily feeding schedules."
+    },
+    "refresh_schedule": {
+      "name": "Refresh feeding schedule",
+      "description": "Fetch the current schedule from PETKIT immediately."
+    },
+    "get_camera_access": {
+      "name": "Get camera access",
+      "description": "Obtain short-lived camera credentials."
+    },
+    "start_camera_stream": {
+      "name": "Start camera stream",
+      "description": "Start a native audio and video stream through the media sidecar."
+    },
+    "stop_camera_stream": {
+      "name": "Stop camera stream",
+      "description": "Stop one sidecar camera session."
+    }
+  }
+}

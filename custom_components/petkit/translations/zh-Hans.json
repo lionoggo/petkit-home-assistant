@@ -1,0 +1,144 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "连接小佩账号",
+        "description": "建议使用已接受 D4sh 设备共享的专用账号。",
+        "data": {
+          "account": "账号",
+          "password": "密码"
+        }
+      },
+      "reauth_confirm": {
+        "title": "重新认证小佩账号",
+        "description": "请输入 {account} 的当前密码。",
+        "data": {
+          "password": "密码"
+        }
+      },
+      "init": {
+        "title": "小佩原生媒体服务",
+        "description": "配置用于摄像头音视频的原生 sidecar。",
+        "data": {
+          "media_sidecar_url": "Sidecar 地址",
+          "media_sidecar_token": "Sidecar 令牌"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "无法连接小佩云端。",
+      "invalid_auth": "账号或密码不正确。",
+      "no_devices": "账号下未找到 D4sh 智能喂食器。",
+      "verification_required": "小佩要求短信或交互验证。请先在官方 App 完成登录并确认已设置密码。",
+      "sidecar_incomplete": "请同时填写 sidecar 地址和令牌，或全部留空。",
+      "sidecar_unavailable": "媒体 sidecar 健康检查失败。"
+    },
+    "abort": {
+      "already_configured": "该小佩账号已配置。",
+      "reauth_successful": "重新认证成功。"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "food_bin_1": {
+        "name": "1 仓状态"
+      },
+      "food_bin_2": {
+        "name": "2 仓状态"
+      },
+      "desiccant_days": {
+        "name": "干燥剂剩余"
+      },
+      "today_feed": {
+        "name": "今日出粮"
+      },
+      "today_eat": {
+        "name": "今日进食"
+      },
+      "next_feed": {
+        "name": "下一餐"
+      },
+      "feed_plan": {
+        "name": "喂食计划",
+        "state": {
+          "enabled": "已启用",
+          "paused": "已暂停",
+          "unknown": "未知"
+        }
+      },
+      "eating_pet": {
+        "name": "正在进食的猫"
+      },
+      "last_eating_pet": {
+        "name": "最近进食的猫"
+      }
+    },
+    "binary_sensor": {
+      "online": {
+        "name": "在线"
+      },
+      "feeding": {
+        "name": "出粮中"
+      },
+      "eating": {
+        "name": "进食中"
+      },
+      "plan_enabled": {
+        "name": "今日计划已启用"
+      },
+      "low_battery": {
+        "name": "电量低"
+      },
+      "problem": {
+        "name": "设备异常"
+      }
+    },
+    "button": {
+      "feed_bin_1": {
+        "name": "1 仓加餐一份"
+      },
+      "feed_bin_2": {
+        "name": "2 仓加餐一份"
+      },
+      "refresh": {
+        "name": "刷新"
+      }
+    },
+    "switch": {
+      "manual_lock": {
+        "name": "手动锁定"
+      }
+    },
+    "event": {
+      "pet_activity": {
+        "name": "宠物活动"
+      }
+    }
+  },
+  "services": {
+    "feed_now": {
+      "name": "立即加餐",
+      "description": "从指定仓位立即出粮。"
+    },
+    "save_schedule": {
+      "name": "保存喂食计划",
+      "description": "保存完整的七天喂食计划。"
+    },
+    "refresh_schedule": {
+      "name": "刷新喂食计划",
+      "description": "立即从小佩云端获取当前喂食计划。"
+    },
+    "get_camera_access": {
+      "name": "获取摄像头访问",
+      "description": "获取短时实时视频凭据。"
+    },
+    "start_camera_stream": {
+      "name": "启动摄像头音频流",
+      "description": "通过原生媒体 sidecar 启动音视频流。"
+    },
+    "stop_camera_stream": {
+      "name": "停止摄像头音频流",
+      "description": "停止一个 sidecar 摄像头会话。"
+    }
+  }
+}

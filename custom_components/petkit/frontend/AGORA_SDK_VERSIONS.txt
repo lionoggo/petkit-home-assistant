@@ -1,0 +1,8 @@
+Agora RTM Web SDK: 2.3.0
+Source: npm package agora-rtm-sdk@2.3.0 (agora-rtm.js)
+
+Agora Go Server SDK: 2.4.22
+Native Agora RTC runtime: 4.4.32 line, pinned by the sidecar build.
+
+The browser SDK file is vendored unchanged so Home Assistant users do not
+depend on runtime CDN availability.

@@ -1,0 +1,12 @@
+#!/command/with-contenv bash
+set -euo pipefail
+
+token_file=/data/petkit_media_token
+
+if [ ! -s "$token_file" ]; then
+    token=$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')
+    printf '%s\n' "$token" >"$token_file"
+fi
+
+chown 65532:65532 "$token_file"
+chmod 600 "$token_file"

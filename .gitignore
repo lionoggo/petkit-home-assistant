@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+.DS_Store
+media_sidecar/.build/
+media_sidecar/bin/
+media_sidecar/agora_sdk/
+media_sidecar/agora_sdk_mac/
+.acceptance-backup/
+/petkit-lan-research/

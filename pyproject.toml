@@ -1,0 +1,10 @@
+[project]
+name = "petkit-home-assistant"
+version = "0.4.0"
+description = "Unofficial PETKIT D4sh integration for Home Assistant"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+asyncio_mode = "auto"

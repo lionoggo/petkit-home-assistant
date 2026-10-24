@@ -1,0 +1,17 @@
+{
+  "domain": "petkit",
+  "name": "PETKIT D4sh Feeder",
+  "codeowners": [
+    "@lionoggo"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "http"
+  ],
+  "documentation": "https://github.com/lionoggo/petkit-home-assistant",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/lionoggo/petkit-home-assistant/issues",
+  "requirements": [],
+  "version": "0.5.0"
+}

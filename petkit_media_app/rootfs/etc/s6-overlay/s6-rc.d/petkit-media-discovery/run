@@ -1,0 +1,31 @@
+#!/command/with-contenv bashio
+set -u
+
+token=$(cat /data/petkit_media_token)
+healthy=false
+
+for _attempt in $(seq 1 30); do
+    if curl -fsS \
+        -H "Authorization: Bearer ${token}" \
+        http://127.0.0.1:8099/healthz >/dev/null; then
+        healthy=true
+        break
+    fi
+    sleep 1
+done
+
+if [ "$healthy" != true ]; then
+    bashio::log.warning "PETKIT media sidecar did not become healthy"
+    exit 0
+fi
+
+payload=$(jq -cn \
+    --arg host "$(hostname)" \
+    --arg token "$token" \
+    '{host: $host, port: 8099, token: $token}')
+
+if bashio::discovery petkit "$payload" >/dev/null; then
+    bashio::log.info "PETKIT media sidecar discovery sent"
+else
+    bashio::log.warning "PETKIT media sidecar discovery failed"
+fi

@@ -1,0 +1,119 @@
+feed_now:
+  name: Feed now
+  description: Dispense food immediately from one or both D4sh bins.
+  fields:
+    device_id:
+      name: PETKIT device ID
+      description: Required when more than one D4sh device is loaded.
+      example: "453354"
+      selector:
+        text:
+    amount1:
+      name: Bin 1 portions
+      description: Number of portions from bin 1. This operation feeds the pet.
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+          step: 1
+          mode: box
+    amount2:
+      name: Bin 2 portions
+      description: Number of portions from bin 2. This operation feeds the pet.
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+          step: 1
+          mode: box
+
+save_schedule:
+  name: Save feeding schedule
+  description: Replace all seven daily schedules after checking for concurrent changes.
+  fields:
+    device_id:
+      name: PETKIT device ID
+      description: Required when more than one D4sh device is loaded.
+      example: "453354"
+      selector:
+        text:
+    days:
+      name: Seven-day schedule
+      description: Full D4sh feedDailyList. Normally supplied by the PETKIT schedule card.
+      required: true
+      selector:
+        object:
+    expected_hash:
+      name: Expected schedule hash
+      description: Hash shown by the plan sensor; prevents accidental overwrite.
+      required: true
+      selector:
+        text:
+
+refresh_schedule:
+  name: Refresh feeding schedule
+  description: Fetch the current seven-day schedule from PETKIT immediately.
+  fields:
+    device_id:
+      name: PETKIT device ID
+      description: Required when more than one D4sh device is loaded.
+      example: "453354"
+      selector:
+        text:
+
+get_camera_access:
+  name: Get camera access
+  description: Obtain short-lived Agora RTC and RTM credentials for the camera card.
+  fields:
+    device_id:
+      name: PETKIT device ID
+      description: Required when more than one D4sh device is loaded.
+      example: "453354"
+      selector:
+        text:
+    quality:
+      name: Video quality
+      description: 1 is SD and 2 is HD.
+      default: 2
+      selector:
+        select:
+          options:
+            - label: SD
+              value: "1"
+            - label: HD
+              value: "2"
+
+start_camera_stream:
+  name: Start camera stream
+  description: Start native audio and video through the configured media sidecar.
+  fields:
+    device_id:
+      name: PETKIT device ID
+      description: Required when more than one D4sh device is loaded.
+      example: "453354"
+      selector:
+        text:
+    quality:
+      name: Video quality
+      description: 1 is SD and 2 is HD.
+      default: 2
+      selector:
+        select:
+          options:
+            - label: SD
+              value: "1"
+            - label: HD
+              value: "2"
+
+stop_camera_stream:
+  name: Stop camera stream
+  description: Stop one native media sidecar session.
+  fields:
+    session_id:
+      name: Sidecar session ID
+      description: Opaque session identifier returned by start_camera_stream.
+      required: true
+      selector:
+        text:

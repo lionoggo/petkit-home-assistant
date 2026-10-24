@@ -1,0 +1,111 @@
+name: Build PETKIT Media App
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/build-petkit-media-app.yml"
+      - "petkit_media_app/**"
+      - "media_sidecar/**"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - ".github/workflows/build-petkit-media-app.yml"
+      - "petkit_media_app/**"
+      - "media_sidecar/**"
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      architectures: ${{ steps.info.outputs.architectures }}
+      build_matrix: ${{ steps.matrix.outputs.matrix }}
+      image_name: ${{ steps.normalize.outputs.image_name }}
+      registry_prefix: ${{ steps.normalize.outputs.registry_prefix }}
+      version: ${{ steps.normalize.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get app information
+        id: info
+        uses: home-assistant/actions/helpers/info@master
+        with:
+          path: "./petkit_media_app"
+
+      - name: Normalize image information
+        id: normalize
+        env:
+          IMAGE: ${{ steps.info.outputs.image }}
+          VERSION: ${{ steps.info.outputs.version }}
+        run: |
+          echo "image_name=${IMAGE##*/}" >> "$GITHUB_OUTPUT"
+          echo "registry_prefix=${IMAGE%/*}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare build matrix
+        id: matrix
+        uses: home-assistant/builder/actions/prepare-multi-arch-matrix@2026.09.0
+        with:
+          architectures: ${{ steps.info.outputs.architectures }}
+          image-name: ${{ steps.normalize.outputs.image_name }}
+          registry-prefix: ${{ steps.normalize.outputs.registry_prefix }}
+
+  build:
+    name: Build ${{ matrix.arch }}
+    needs: prepare
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.build_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Build image
+        uses: home-assistant/builder/actions/build-image@2026.09.0
+        with:
+          arch: ${{ matrix.arch }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          context: "."
+          file: "petkit_media_app/Dockerfile"
+          image: ${{ matrix.image }}
+          image-tags: |
+            ${{ needs.prepare.outputs.version }}
+          labels: |
+            io.hass.type=app
+            io.hass.name=PETKIT Media Bridge
+            io.hass.description=Native PETKIT D4sh media bridge for Home Assistant
+            io.hass.url=https://github.com/lionoggo/petkit-home-assistant
+          push: ${{ github.event_name == 'push' }}
+          version: ${{ needs.prepare.outputs.version }}
+
+  manifest:
+    name: Publish multi-arch manifest
+    needs:
+      - prepare
+      - build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+    steps:
+      - name: Publish manifest
+        uses: home-assistant/builder/actions/publish-multi-arch-manifest@2026.09.0
+        with:
+          architectures: ${{ needs.prepare.outputs.architectures }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ needs.prepare.outputs.image_name }}
+          image-tags: |
+            ${{ needs.prepare.outputs.version }}
+          registry-prefix: ${{ needs.prepare.outputs.registry_prefix }}

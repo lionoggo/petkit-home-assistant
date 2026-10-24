@@ -1,0 +1,15 @@
+#!/command/with-contenv bash
+set -euo pipefail
+
+export PETKIT_MEDIA_TOKEN
+PETKIT_MEDIA_TOKEN=$(cat /data/petkit_media_token)
+export PETKIT_MEDIA_ADDR=":8099"
+export PETKIT_MEDIA_MAX_SESSIONS="4"
+
+if [ "$(uname -m)" = "x86_64" ] && ! grep -qw avx /proc/cpuinfo; then
+    echo "PETKIT media CPU lacks AVX; using QEMU compatibility mode"
+    exec /command/s6-setuidgid petkit \
+        /usr/bin/qemu-x86_64-static -cpu max /usr/local/bin/petkit-media
+fi
+
+exec /command/s6-setuidgid petkit /usr/local/bin/petkit-media

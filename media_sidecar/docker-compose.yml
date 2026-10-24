@@ -1,0 +1,16 @@
+services:
+  petkit-media:
+    build:
+      context: ..
+      dockerfile: media_sidecar/Dockerfile
+    environment:
+      PETKIT_MEDIA_TOKEN: "${PETKIT_MEDIA_TOKEN:?set PETKIT_MEDIA_TOKEN}"
+      PETKIT_MEDIA_ADDR: ":8099"
+      PETKIT_MEDIA_MAX_SESSIONS: "4"
+    ports:
+      - "${PETKIT_MEDIA_BIND:-127.0.0.1}:8099:8099"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

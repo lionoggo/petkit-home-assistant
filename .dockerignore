@@ -1,0 +1,11 @@
+.git
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.venv
+media_sidecar/.build
+media_sidecar/bin
+media_sidecar/agora_sdk
+media_sidecar/agora_sdk_mac
+petkit-lan-research
